@@ -9,8 +9,15 @@ const genresController = {
                 res.render('genresList.ejs', {genres})
             })
     },
+    
     'detail': (req, res) => {
-        db.Genre.findByPk(req.params.id)
+        db.Genre.findByPk(req.params.id, {
+            include : [
+                {
+                    association : 'movies'
+                }
+            ]
+        })
             .then(genres => {
                 res.render('genresDetail.ejs', {genres});
             });

@@ -29,7 +29,7 @@
             <p>
                 <select name="genre_id" id="" required>
                     <% allGenres.forEach(genre => { %>
-                    <option value="<%= genre.id %>" <% if (Movie.genre_id == genre.id) { %><%= 'selected' %><% }; %>><%= genre.name %></option>
+                    <option value="<%= genre.id %>" <% if (Movie.genre.id == genre.id) { %><%= 'selected' %><% }; %>><%= genre.name %></option>
                      <% }); %>    <!--traigo todos los generos, y lo que dice que cual de todos esos generos machea con la pelicula que estoy editando. O sea, tengo que cargar una pelicula y varios generos en el controller -->
                 </select>
             </p>

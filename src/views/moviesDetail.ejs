@@ -24,10 +24,12 @@
     <a href="/movies/edit/<%= movie.id %>">EDITAR</a>
     <br>
     
-    <a href="/movies/delete<%= movie.id %>">ELIMINAR</a>
+    <a href="/movies/delete?id=<%= movie.id %>&title=<%= movie.title %>">ELIMINAR</a>
     <br>
 
-    <a href="/movies/<%= movie.id %>">LISTADO DE PELICULAS</a>
+    <a href="/movies">LISTADO DE PELICULAS</a>
+
+    
 
 </body>
 </html>

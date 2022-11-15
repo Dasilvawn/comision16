@@ -2,7 +2,7 @@ const path = require('path');
 const moment = require('moment');
 const db = require('../database/models');
 const sequelize = db.sequelize;
-const { Op } = require("sequelize");
+const { Op, Association } = require("sequelize");
 
 
 //Aqui tienen una forma de llamar a cada uno de los modelos
@@ -83,7 +83,14 @@ const moviesController = {
     },
 
     edit: function (req, res) {
-        let Movie = Movies.findByPk(req.params.id) //en esta varianle guardo la pelicula
+        let Movie = Movies.findByPk(req.params.id, {  //en esta varianle guardo la pelicula
+
+            include : [ {
+                association : 'genre'
+
+            }]
+        })
+
         let allGenres = Genres.findAll({       //en esta variable guardo todas los generos de la base de datos.
             order : ['name']
         });
@@ -125,26 +132,38 @@ const moviesController = {
             .catch(err => console.log(err))
     },
     delete: function (req, res) {
-        return req.send(req.body)
-        db.Movie.findByPk({
-            where: {  
-                id: req.params.id   
-            }
-                .then(movie => {
-                    res.render("moviesDelete", { movie })
-                })
-                .catch(err=>console.log(err))   
-        })
+        const Movie = req.query  // utilizo query en lugar del params para no hacer una peticion a la database innecesaria
+        res.render('moviesDelete', {Movie})
     },
+    //    db.Movie.findByPk({
+    //         where: {  
+    //             id: req.params.id   
+    //         }
+    //           .then(movie => {
+    //                 res.render("moviesDelete", { movie })
+    //             })
+    //             .catch(err=>console.log(err))   
+    //     })
+    // },
     destroy: function (req, res) {
-        db.Movie.destroy({
-            where: {
-                id: req.params.id
-            }
-            .then(movies => {
-                res.redirect('/moviesDelete', { movies })
+       const {id} = req.params  //tambien se puede hacer por query en este caso porque solo manda el id, si hubiese otro dato lo mejor es por params para poder diferenciar que estoy eliminando
+       Movies.destroy({where:{id}})
+        
+          .then(()=>{   //recibe un valor si el where devuelve un valor, pero como no devuelve ningun valor, directamente dejo el callback vacio. Lo que esta aca adentro es lo que se va a ejecutar despues de la eliminacion de esa movie
+           return res.redirect('/movies')
+          })
+          .catch(err=>{
+            console.log(err)
         })
-    })
+
+    //     db.Movie.destroy({  
+    //         where: {
+    //             id: req.params.id
+    //         }
+    //         .then(movies => {
+    //             res.redirect('/moviesDelete', { movies })
+    //     })
+    // })
 } }
 
 
