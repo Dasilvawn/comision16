@@ -41,12 +41,17 @@ module.exports = (sequelize, dataTypes) => {
         })
     }
 
-    Movie.belongsToMany(models.Actor,{ //para crear la relacion de muchos a muchos
-       as: 'actors',
-       through : 'actor_movie',
-       foreignKey : 'movie_id',
-       otherKey : 'actor_id',
-    }) 
+    const Movie = sequelize.define(alias, cols, config);
+
+    Movie.associate = (models) =>{
+        Movie.belongsToMany(models.Actor,{ //para crear la relacion de muchos a muchos
+            as: 'actors',
+            through : 'actor_movie',
+            foreignKey : 'movie_id',
+            otherKey : 'actor_id',
+         }) 
+    }
+    
 
     return Genre
 };
