@@ -12,18 +12,18 @@ const actorsController = {
             })
     },
     
-    // 'detail': (req, res) => {
-    //     db.Actor.findByPk(req.params.id, {
-    //         include : [
-    //             {
-    //                 association : 'movies'
-    //             }
-    //         ]
-    //     })
-    //         .then(actors => {
-    //             res.render('actorsDetail.ejs', {actors});
-    //         });
-    // }
+    'detail': (req, res) => {
+        db.Actor.findByPk(req.params.id, {
+            include : [
+                {
+                    association : 'movies'
+                }
+            ]
+        })
+            .then(actor => {
+                res.render('actorsDetail.ejs', {actor});
+            });
+    }
 
 }
 
